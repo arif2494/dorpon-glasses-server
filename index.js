@@ -18,10 +18,16 @@ async function run() {
 		await client.connect();
 		const database = client.db('dorpon');
 		const productsCollection = database.collection('products');
+		const reviewCollection = database.collection('review');
 
 		// get all products
 		app.get('/products', async (req, res) => {
 			const products = await productsCollection.find({}).toArray();
+			res.json(products);
+		});
+		// get all products
+		app.get('/reviews', async (req, res) => {
+			const products = await reviewCollection.find({}).toArray();
 			res.json(products);
 		});
 	} finally {
