@@ -21,6 +21,7 @@ async function run() {
 		const productsCollection = database.collection('products');
 		const reviewCollection = database.collection('review');
 		const ordersCollection = database.collection('orders');
+		const usersCollection = database.collection('users');
 
 		// get all products
 		app.get('/products', async (req, res) => {
@@ -63,6 +64,21 @@ async function run() {
 			const id = req.params.id;
 			const query = { _id: ObjectId(id) };
 			const result = await ordersCollection.deleteOne(query);
+			res.json(result);
+		});
+		// save a user
+		app.post('/users', async (req, res) => {
+			const user = req.body;
+			const result = await usersCollection.insertOne(user);
+			res.json(result);
+		});
+		// save user for google sign in
+		app.put('/users', async (req, res) => {
+			const user = req.body;
+			const filter = { email: user.email };
+			const options = { upsert: true };
+			const updateDoc = { $set: user };
+			const result = await usersCollection.updateOne(filter, updateDoc, options);
 			res.json(result);
 		});
 	} finally {
