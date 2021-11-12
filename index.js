@@ -28,6 +28,19 @@ async function run() {
 			const products = await productsCollection.find({}).toArray();
 			res.json(products);
 		});
+		// set a product
+		app.post('/products', async (req, res) => {
+			const product = req.body;
+			console.log(product);
+			const result = await productsCollection.insertOne(product);
+			res.json(result);
+		})
+		// delete a product
+		app.delete('/products/:id', async (req, res) => {
+			const id = req.params.id;
+			const result = await productsCollection.deleteOne({ _id: ObjectId(id) });
+			res.json(result);
+		})
 		// get all reviews
 		app.get('/reviews', async (req, res) => {
 			const products = await reviewCollection.find({}).toArray();
