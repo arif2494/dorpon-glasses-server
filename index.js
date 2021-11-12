@@ -81,6 +81,29 @@ async function run() {
 			const result = await usersCollection.updateOne(filter, updateDoc, options);
 			res.json(result);
 		});
+		// make an admin
+		app.put('/admin/:email', async (req, res) => {
+			const email = req.params.email;
+			const query = { email: email };
+			const updateDoc = { $set: { isAdmin: true } };
+			const result = await usersCollection.updateOne(query, updateDoc);
+			res.json(result);
+		});
+		// find admin
+		app.get('/admin/:email', async (req, res) => {
+			const email = req.params.email;
+			if (email === 'undefined') {
+				return;
+			}
+			const query = { email: email };
+			const user = await usersCollection.findOne(query);
+			if (user?.isAdmin) {
+				res.json(user);
+			}else{
+				user.isAdmin = false;
+				res.json(user);
+			}
+		});
 	} finally {
 		// await client.close();
 	}
