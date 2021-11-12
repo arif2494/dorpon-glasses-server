@@ -52,6 +52,11 @@ async function run() {
 			const result = await ordersCollection.insertOne(order);
 			res.json(result);
 		});
+		// get all orders
+		app.get('/orders', async (req, res) => {
+			const orders = await ordersCollection.find({}).toArray();
+			res.json(orders);
+		})
 		// get specefic user orders
 		app.get('/order/:email', async (req, res) => {
 			const email = req.params.email;
@@ -59,6 +64,18 @@ async function run() {
 			const orders = await ordersCollection.find(query).toArray();
 			res.json(orders);
 		});
+		// ship an order
+		app.put('/order/:id', async (req, res) => {
+			const id  = req.params.id;
+			const query = { _id: ObjectId(id) };
+			const update = {
+				$set: {status: 'shipped'}
+			}
+			const options = { upsert: true };
+			const result = await ordersCollection.updateOne(query, update, options);
+			res.json(result);
+
+		})
 		// cancel an specific order
 		app.delete('/order/cancel/:id', async (req, res) => {
 			const id = req.params.id;
