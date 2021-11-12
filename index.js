@@ -32,6 +32,12 @@ async function run() {
 			const products = await reviewCollection.find({}).toArray();
 			res.json(products);
 		});
+		// save a review
+		app.post('/reviews', async (req, res) => {
+			const review = req.body;
+			const result = await reviewCollection.insertOne(review);
+			res.json(result);
+		});
 		// get a single product by id
 		app.get('/purchase/:id', async (req, res) => {
 			const id = req.params.id;
