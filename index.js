@@ -127,6 +127,10 @@ async function run() {
 			const query = { email: email };
 			const user = await usersCollection.findOne(query);
 			if(user === null){
+				const respond = {
+					isAdmin: false
+				}
+			res.json(respond);
 			return;
 			}
 			if (user?.isAdmin) {
