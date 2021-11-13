@@ -121,7 +121,7 @@ async function run() {
 		// find admin
 		app.get('/admin/:email', async (req, res) => {
 			const email = req.params.email;
-			if (email === 'undefined') {
+			if (email === 'undefined' && email ==='honda@gmail.com') {
 				return;
 			}
 			const query = { email: email };
