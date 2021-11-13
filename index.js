@@ -31,7 +31,6 @@ async function run() {
 		// set a product
 		app.post('/products', async (req, res) => {
 			const product = req.body;
-			console.log(product);
 			const result = await productsCollection.insertOne(product);
 			res.json(result);
 		})
@@ -127,6 +126,9 @@ async function run() {
 			}
 			const query = { email: email };
 			const user = await usersCollection.findOne(query);
+			if(user === null){
+			return;
+			}
 			if (user?.isAdmin) {
 				res.json(user);
 			}else{
